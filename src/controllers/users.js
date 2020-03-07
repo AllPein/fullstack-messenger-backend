@@ -37,11 +37,9 @@ function signIn(req, res, next){
 
     res.status(200).json({ token });
 
-    console.log("successful login!");
 }
 
  function getInfo(req, res, next){
-    console.log(res);
 
     const { username, email, _id, avatarColor} = req.user;
     res.json({ username, email, _id, avatarColor });

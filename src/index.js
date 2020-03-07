@@ -1,10 +1,18 @@
+const { createServer } = require('http');
+
+const createRoutes  = require('./routes/routes');
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/authentication", { 
+
+const cs = require('./core/socket');
+
+mongoose.connect("mongodb://localhost/react-chat", { 
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
     useUnifiedTopology: true
 });
 
@@ -14,8 +22,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-const users = require("./routes/users");
-app.use("/users", users);
+const http = createServer(app);
+const io = cs(http);
+
+
+createRoutes(app, io);
+
+
 
 const port = process.env.PORT || 5000;
 
