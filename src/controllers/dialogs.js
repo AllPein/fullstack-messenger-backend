@@ -7,17 +7,18 @@ class DialogController {
     }
 
     init(req, res) {
-        const userId = req.params.id
-        
+        const userId = req.params.id;
+
         Dialog.find().or([{ author: userId }, { partner: userId }])
         .populate({path: 'author', select: ['_id', 'username', 'avatarColor']})
         .populate({path: 'partner', select: ['_id', 'username', 'avatarColor']})
-        .populate({path: 'lastMessage', select: ['_id', 'text', 'user'], populate: {
+        .populate({path: 'lastMessage', select: ['_id', 'text', 'user', 'time'], populate: {
             path: 'user',
             select: ["_id"]
         }})
         .exec((err, dialogs) => {
             if (err) return res.status(404).json(err);
+
             return res.json(dialogs);
         });
     }
@@ -53,7 +54,7 @@ class DialogController {
                     await dialogData.save();
 
                     await res.json(dialogData);
-                    await this.io.emit("DIALOG_CREATED", {
+                    await this.io.emit("DIALOGS:DIALOG_CREATED", {
                         ...data,
                         dialog: dialogData
                     })

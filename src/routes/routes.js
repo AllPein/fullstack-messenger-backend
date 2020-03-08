@@ -14,10 +14,11 @@ const createRoutes = (app, io) => {
     const DC = new DialogController(io);
     const MC = new MessageController(io);
 
-    app.get('/messages/:id', MC.init);
+    app.get('/messages/:id',(req, res) => MC.init(req, res));
+    app.post('/messages/:id',(req, res) => MC.create(req, res));
 
-    app.get('/dialogs/:id', DC.init);
-    app.post('/dialogs', DC.create);
+    app.get('/dialogs/:id',(req, res) => DC.init(req, res));
+    app.post('/dialogs',(req, res) => DC.create(req, res));
 
     app.post("/users/register", UserController.signUp);
     app.post("/users/login", validateBody(schemas.authSchema), passport.authenticate("local", { session: false }), UserController.signIn);
