@@ -11,7 +11,7 @@ signWithToken = (user) => {
     }, JWT_SECRET)
 }
 
-async function signUp(req, res, next){
+const signUp =  async (req, res, next) =>{
     const { email, password, username } = req.body;
     
     const avatarColor = `rgb(${Math.random() * (200 - 3) + 3}, ${Math.random() * (200 - 3) + 3}, ${Math.random() * (200 - 3) + 3})`;
@@ -32,17 +32,34 @@ async function signUp(req, res, next){
     res.status(200).json({ token })
 }
 
-function signIn(req, res, next){
+const signIn = (req, res, next) =>{
     const token = signWithToken(req.user);
 
     res.status(200).json({ token });
 
 }
-
- function getInfo(req, res, next){
+const getInfo = (req, res, next) =>{
 
     const { username, email, _id, avatarColor} = req.user;
     res.json({ username, email, _id, avatarColor });
 }
 
-module.exports = {signIn, signUp, getInfo};
+const find = (req, res) => {
+    const { email, username } = req.body;
+
+    User.find().or([{ email }, { username }])
+    .select(['_id', 'username', 'avatarColor', 'email'])
+    .exec((err, user) => {
+        return res.json(user);
+    })
+
+}
+
+const setLastSeen = ({userId, lastSeen, isOnline}) => {
+    User.findOneAndUpdate({_id: userId}, { isOnline: isOnline, lastSeen: lastSeen }, { upsert: true }, (err) => {}); 
+    
+
+}
+
+
+module.exports = {signIn, signUp, getInfo, find, setLastSeen};

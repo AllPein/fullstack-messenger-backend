@@ -25,6 +25,14 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    lastSeen: {
+        type: Date,
+        required: true
+    },
+    isOnline: {
+        type: Boolean,
+        required: true
     }
 });
 

@@ -23,7 +23,7 @@ const createRoutes = (app, io) => {
     app.post("/users/register", UserController.signUp);
     app.post("/users/login", validateBody(schemas.authSchema), passport.authenticate("local", { session: false }), UserController.signIn);
     app.get("/users/userinfo", passport.authenticate("jwt", { session: false }), UserController.getInfo);
-
+    app.post("/users/", UserController.find);
 }
 
 
