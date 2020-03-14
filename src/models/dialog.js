@@ -19,6 +19,7 @@ const dialogSchema = new Schema({
         required: false
     }
     
+    
 });
 
 const Dialog = mongoose.model('dialog', dialogSchema);

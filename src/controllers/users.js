@@ -48,7 +48,7 @@ const find = (req, res) => {
     const { email, username } = req.body;
 
     User.find().or([{ email }, { username }])
-    .select(['_id', 'username', 'avatarColor', 'email'])
+    .select(['_id', 'username', 'avatarColor', 'email', 'isOnline'])
     .exec((err, user) => {
         return res.json(user);
     })

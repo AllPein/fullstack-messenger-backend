@@ -20,6 +20,10 @@ const messageSchema = new Schema({
     time: {
         type: Date,
         required: true
+    },
+    isRead: {
+        type: Boolean,
+        required: true
     }
     
 });

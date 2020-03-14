@@ -14,7 +14,7 @@ const createRoutes = (app, io) => {
     const DC = new DialogController(io);
     const MC = new MessageController(io);
 
-    app.get('/messages/:id',(req, res) => MC.init(req, res));
+    app.get('/messages/:dialogId/:userId',(req, res) => MC.init(req, res));
     app.post('/messages/:id',(req, res) => MC.create(req, res));
 
     app.get('/dialogs/:id',(req, res) => DC.init(req, res));

@@ -12,14 +12,14 @@ class DialogController {
         Dialog.find().or([{ author: userId }, { partner: userId }])
         .populate({path: 'author', select: ['_id', 'username', 'avatarColor', 'lastSeen', 'isOnline']})
         .populate({path: 'partner', select: ['_id', 'username', 'avatarColor', 'lastSeen', 'isOnline']})
-        .populate({path: 'lastMessage', select: ['_id', 'text', 'user', 'time'], populate: {
+        .populate({path: 'lastMessage', select: ['_id', 'text', 'user', 'time', 'isRead'], populate: {
             path: 'user',
             select: ["_id"]
         }})
         .exec((err, dialogs) => {
             if (err) return res.status(404).json(err);
 
-            return res.json(dialogs);
+            return res.json(dialogs.sort((a, b) => a.lastMessage.time - b.lastMessage.time).reverse());
         });
     }
 
@@ -35,7 +35,7 @@ class DialogController {
             partner: data.partner
         }, async (err, response) => {
             if (err) return res.status(500).json({error: "Error"});
-            if (response) return res.status(401).json({error: 'Dialog with such id already exists'});
+            if (response) return res.status(400).json({error: 'Dialog with such id already exists'});
 
             else {
                     const dialog = new Dialog(data);
@@ -46,7 +46,8 @@ class DialogController {
                         user: data.author,
                         dialogId: dialogData._id,
                         text: req.body.text,
-                        time: req.body.time
+                        time: req.body.time,
+                        isRead: false
                     })
 
                     let messageData = await message.save();
