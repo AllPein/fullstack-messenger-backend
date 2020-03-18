@@ -39,7 +39,9 @@ class DialogController {
 
             else {
                     const dialog = new Dialog(data);
-
+                    dialog.count = {};
+                    dialog.count[data.author] = 0;
+                    dialog.count[data.partner] = 1;
                     let dialogData = await dialog.save();
 
                     let message = new Message({
@@ -47,6 +49,9 @@ class DialogController {
                         dialogId: dialogData._id,
                         text: req.body.text,
                         time: req.body.time,
+                        count: {
+
+                        },
                         isRead: false
                     })
 

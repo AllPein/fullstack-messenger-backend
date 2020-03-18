@@ -16,6 +16,8 @@ const createRoutes = (app, io) => {
 
     app.get('/messages/:dialogId/:userId',(req, res) => MC.init(req, res));
     app.post('/messages/:id',(req, res) => MC.create(req, res));
+    app.delete('/messages/:id',(req, res) => MC.delete(req, res));
+
 
     app.get('/dialogs/:id',(req, res) => DC.init(req, res));
     app.post('/dialogs',(req, res) => DC.create(req, res));

@@ -17,9 +17,11 @@ const dialogSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "message",
         required: false
+    },
+    count: {
+        type: Schema.Types.Mixed,
+        required: false,
     }
-    
-    
 });
 
 const Dialog = mongoose.model('dialog', dialogSchema);
