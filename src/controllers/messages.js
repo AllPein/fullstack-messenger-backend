@@ -15,7 +15,7 @@ class MessageController {
                 dialog.count[userId] = 0;
                 dialog.markModified('count');
                 dialog.save();
-                await this.io.emit("MESSAGES:UPDATE_IS_READ", {userId, dialogId});
+                this.io.emit("MESSAGES:UPDATE_IS_READ", {userId, dialogId});
                 
             }
         )
@@ -97,6 +97,12 @@ class MessageController {
                         else {
                             Dialog.findById(dialogId, (err, dialog) => {
                                 if (err) return res.status(400).json({error: err});
+                                let id = dialog.author.toString()  == message.user.toString() ? dialog.get("partner") : dialog.get("author");
+                                if (dialog.count[id] > 0 ) {
+                                    let count = dialog.count[id] - 1;
+                                    dialog.count[id] = count;
+                                    dialog.markModified('count');
+                                }
                                 dialog.lastMessage = lastMessage;
                                 dialog.save();
 

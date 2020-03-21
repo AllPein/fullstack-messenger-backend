@@ -21,7 +21,7 @@ const signUp =  async (req, res, next) =>{
         return res.status(403).json({ error: 'A user with such email already exsits!' });
     }
 
-    const newUser = new User({ email, password, username, avatarColor });
+    const newUser = new User({ email, password, username, avatarColor, isOnline: true, lastSeen: new Date() });
     await newUser.save();
 
     

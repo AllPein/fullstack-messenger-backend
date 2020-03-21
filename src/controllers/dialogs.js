@@ -31,8 +31,10 @@ class DialogController {
         }
 
         Dialog.findOne({
-            author: data.author,
-            partner: data.partner
+            $and : [
+                { $or : [ { author : data.author}, { partner : data.author } ] },
+                { $or : [ { author : data.partner }, { partner : data.partner } ] }
+            ]
         }, async (err, response) => {
             if (err) return res.status(500).json({error: "Error"});
             if (response) return res.status(400).json({error: 'Dialog with such id already exists'});
