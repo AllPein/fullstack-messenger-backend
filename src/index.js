@@ -6,10 +6,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-
+require('dotenv').config();
 const cs = require('./core/socket');
 
-mongoose.connect("mongodb://localhost/react-chat", { 
+mongoose.connect(process.env.MONGODB_URI, { 
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
