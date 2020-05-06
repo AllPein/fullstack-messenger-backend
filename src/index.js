@@ -9,12 +9,7 @@ const mongoose = require("mongoose");
 require('dotenv').config();
 const cs = require('./core/socket');
 
-mongoose.connect(process.env.MONGODB_URI, { 
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-});
+
 
 const app = express();
 
@@ -25,11 +20,15 @@ app.use(bodyParser.json());
 const http = createServer(app);
 const io = cs(http);
 
-
 createRoutes(app, io);
 
-
-
 const port = process.env.PORT || 5000;
-
-http.listen(port, () => console.log(`Server started on port: ${port}`));
+mongoose.connect(process.env.MONGODB_URI, { 
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+})
+.then(() => {
+    http.listen(port, () => console.log(`Server started on port: ${port}`));
+});
